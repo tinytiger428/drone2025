@@ -19,11 +19,8 @@
             margin: 0;
             padding: 0;
             
-            /* 右下の固定要素のために、本文の右側にパディングを設定 */
-            /* large (lg)以上の画面幅で適用 */
-            @media (min-width: 1024px) {
-                padding-right: 120px; /* ドローンアイコンの幅に合わせて十分な余白を確保 (w-24 + padding) */
-            }
+            /* 【修正点】右下の固定要素のためのパディングを削除しました。 */
+            /* これにより、container mx-autoが正しくコンテンツを中央配置します。 */
         }
         
         /* -------------------------------------- */
@@ -32,7 +29,7 @@
 
         /* ネオン脈動アニメーション */
         @keyframes neon-pulse {
-            0%, 100% { filter: drop-shadow(0 0 3px #06b6d4) drop-shadow(0 0 8px #06b6d4); opacity: 1; }
+            0%, 100% { filter: drop-shadow(0 0 3px #06b6d4) drop_shadow(0 0 8px #06b6d4); opacity: 1; }
             50% { filter: drop-shadow(0 0 5px #06b6d4) drop_shadow(0 0 12px #06b6d4); opacity: 0.95; }
         }
 
@@ -219,7 +216,7 @@
                 SYSTEM BOOTUP COMPLETE
             </div>
             <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight tracking-tight">
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-pink-300">あなたの</span>人生に<span class="glitch-text text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-300">「上から目線」</span>を<br class="md:hidden" /><span class="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-pink-300">加えてみませんか</span>？
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-pink-300">あなたの人生</span>に<span class="glitch-text text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-300">「上から目線」</span>を<br class="md:hidden" /><span class="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-pink-300">加えて</span>みませんか？
             </h1>
             <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed font-mono">
                 [DRONE/OBSERVATION/DATA] 3つの領域が交差する、未踏のデジタル世界へようこそ。
