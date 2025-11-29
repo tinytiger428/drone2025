@@ -18,6 +18,12 @@
             color: #d1d5db; /* デフォルトの文字色を明るいグレーに */
             margin: 0;
             padding: 0;
+            
+            /* 右下の固定要素のために、本文の右側にパディングを設定 */
+            /* large (lg)以上の画面幅で適用 */
+            @media (min-width: 1024px) {
+                padding-right: 120px; /* ドローンアイコンの幅に合わせて十分な余白を確保 (w-24 + padding) */
+            }
         }
         
         /* -------------------------------------- */
@@ -27,10 +33,17 @@
         /* ネオン脈動アニメーション */
         @keyframes neon-pulse {
             0%, 100% { filter: drop-shadow(0 0 3px #06b6d4) drop-shadow(0 0 8px #06b6d4); opacity: 1; }
-            50% { filter: drop-shadow(0 0 5px #06b6d4) drop-shadow(0 0 12px #06b6d4); opacity: 0.95; }
+            50% { filter: drop-shadow(0 0 5px #06b6d4) drop_shadow(0 0 12px #06b6d4); opacity: 0.95; }
         }
 
-        /* カスタムネオングロー (シアンとマゼンタを追加) */
+        /* 2Dホバリングアニメーション (上下にゆっくり浮遊) */
+        @keyframes hovering-2d {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(1deg); } /* ホバリングの高さを少し大きく */
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+
+        /* カスタムネオングロー (シアン) */
         .neon-glow-cyan {
             box-shadow: 0 0 8px #06b6d4, 0 0 16px #06b6d4;
             animation: neon-pulse 3s ease-in-out infinite alternate;
@@ -56,9 +69,6 @@
 
         /* HUD風エフェクト用のカスタムCSS */
         .hud-overlay {
-            border: 5px solid rgba(255, 255, 255, 0.05);
-            border-radius: 0.25rem;
-            pointer-events: none;
             /* グリッドパターンを強化 */
             background: 
                 linear-gradient(to right, #111 1px, transparent 1px) 0 0,
@@ -66,13 +76,7 @@
             background-size: 50px 50px;
             opacity: 0.5;
         }
-        .hud-corner {
-            position: absolute;
-            width: 32px;
-            height: 32px;
-            border-color: #ec4899; /* マゼンタ */
-            filter: drop-shadow(0 0 3px #ec4899);
-        }
+        
         .bg-cyber-grid {
             /* ヒーロー背景を抽象的なグラデーションとグリッドに */
             background-color: #050505;
@@ -82,28 +86,39 @@
         }
 
         /* -------------------------------------- */
-        /* ドローンアニメーション専用CSS */
+        /* 2Dドローン固定コンテナ専用CSS (右下固定) */
         /* -------------------------------------- */
+        #drone-fixed-container {
+            position: fixed;
+            bottom: 3rem; /* 下からの距離を少し上げる */
+            right: 3rem; /* 右からの距離を少し上げる */
+            z-index: 1000; /* 他の要素の上に表示 */
+            
+            /* 背景を完全に削除し、アイコンだけを表示 */
+            padding: 0;
+            background: none;
+            box-shadow: none;
+            
+            display: flex;
+            flex-direction: column;
+            align-items: center;
 
-        /* 1. ホバリングアニメーション（機体全体） */
-        @keyframes hover {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-5px); } /* 上にホバリング */
-            100% { transform: translateY(0); }
+            /* モバイルでは非表示、LG以上でのみ表示 */
+            display: none;
         }
-        .drone-hover {
-            animation: hover 3s ease-in-out infinite alternate; /* 往復アニメーション */
+        
+        @media (min-width: 1024px) {
+            #drone-fixed-container {
+                display: flex;
+            }
         }
 
-        /* 2. プロペラ回転アニメーション */
-        @keyframes spin-fast {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        .propeller-spin {
-            transform-box: fill-box;
-            transform-origin: 50px 50px; /* SVGの中心 */
-            animation: spin-fast 0.8s linear infinite; /* 非常に速い回転 */
+        .drone-2d-icon {
+            /* 2Dホバリングアニメーションの適用 */
+            animation: hovering-2d 4s ease-in-out infinite alternate;
+            /* SVGにネオンの影を適用 */
+            filter: drop-shadow(0 0 8px #06b6d4); 
+            transform-origin: center;
         }
         
     </style>
@@ -120,37 +135,25 @@
         <symbol id="icon-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M15 9V7M9 7v2M15 17v-2M9 17v-2M12 12h.01"/><path d="M12 19V5"/></symbol>
         <symbol id="icon-monitor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="6" x2="18" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></symbol>
         <symbol id="icon-radio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.9 19.5a1.45 1.45 0 0 0 2.22 0"/><path d="M2.21 16.4a5.45 5.45 0 0 1 8.58 0"/><path d="M0.5 13.5a9.45 9.45 0 0 1 12.08 0"/><circle cx="7" cy="7" r="2"/></symbol>
+        <!-- ドローンアイコン (Lucide Droneをベースにプロペラを強調) -->
+        <symbol id="icon-drone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v2M12 20v2"/>
+            <path d="M2 12h2M20 12h2"/>
+            <!-- 本体 -->
+            <rect x="7" y="7" width="10" height="10" rx="1" fill="rgba(236, 72, 153, 0.1)"/>
+            <circle cx="12" cy="12" r="2" fill="none"/>
+            <!-- アーム -->
+            <line x1="4" y1="4" x2="7" y2="7"/>
+            <line x1="20" y1="4" x2="17" y2="7"/>
+            <line x1="4" y1="20" x2="7" y2="17"/>
+            <line x1="20" y1="20" x2="17" y2="17"/>
+            <!-- プロペラ（回転表現のため十字） -->
+            <line x1="4" y1="4" x2="4" y2="4" stroke-width="4" stroke="#06b6d4"/>
+            <line x1="20" y1="4" x2="20" y2="4" stroke-width="4" stroke="#06b6d4"/>
+            <line x1="4" y1="20" x2="4" y2="20" stroke-width="4" stroke="#ec4899"/>
+            <line x1="20" y1="20" x2="20" y2="20" stroke-width="4" stroke="#ec4899"/>
+        </symbol>
     </svg>
-    
-    <!-- 抽象的なドローンSVG定義 (アニメーション用) -->
-    <symbol id="mission-core-icon" viewBox="0 0 100 100">
-        <!-- 1. 機体全体のホバリングアニメーションを適用するグループ -->
-        <g class="drone-hover">
-            
-            <!-- 2. プロペラ回転アニメーションを適用するグループ -->
-            <g class="propeller-spin">
-                <!-- 4つの円弧 (プロペラの動き) - シアンネオンでより明るく -->
-                <path d="M 50 10 A 40 40 0 0 1 90 50 L 85 50 A 35 35 0 0 0 50 15 Z" fill="#06B6D4" opacity="0.35" filter="drop-shadow(0 0 2px #06B6D4)" transform="rotate(0, 50, 50)"/>
-                <path d="M 50 10 A 40 40 0 0 1 90 50 L 85 50 A 35 35 0 0 0 50 15 Z" fill="#06B6D4" opacity="0.35" filter="drop-shadow(0 0 2px #06B6D4)" transform="rotate(90, 50, 50)"/>
-                <path d="M 50 10 A 40 40 0 0 1 90 50 L 85 50 A 35 35 0 0 0 50 15 Z" fill="#06B6D4" opacity="0.35" filter="drop-shadow(0 0 2px #06B6D4)" transform="rotate(180, 50, 50)"/>
-                <path d="M 50 10 A 40 40 0 0 1 90 50 L 85 50 A 35 35 0 0 0 50 15 Z" fill="#06B6D4" opacity="0.35" filter="drop-shadow(0 0 2px #06B6D4)" transform="rotate(270, 50, 50)"/>
-            </g>
-            
-            <!-- 3. 機体本体（六角形 - マゼンタネオン） - 影を追加して立体感を出す -->
-            <g transform="translate(50, 50)">
-                <!-- 濃い影（立体感） -->
-                <polygon points="0,-25 21.65,-12.5 21.65,12.5 0,25 -21.65,12.5 -21.65,-12.5" 
-                         fill="#222" opacity="0.7" transform="translate(0, 5) rotate(30)"/>
-                <!-- 本体 -->
-                <polygon points="0,-25 21.65,-12.5 21.65,12.5 0,25 -21.65,12.5 -21.65,-12.5" 
-                         fill="#0E1724" stroke="#EC4899" stroke-width="2" class="neon-glow-magenta" transform="rotate(30)"/>
-            </g>
-            
-            <!-- センタースクリーン/カメラ（中心） -->
-            <rect x="42" y="42" width="16" height="16" rx="2" fill="#050505" opacity="0.9" stroke="#06B6D4" stroke-width="1" filter="drop-shadow(0 0 1px #06B6D4)"/>
-            <circle cx="50" cy="50" r="4" fill="#EC4899" />
-        </g>
-    </symbol>
 </head>
 <body class="font-sans text-gray-200 min-h-screen">
 
@@ -158,10 +161,8 @@
     <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-transparent py-5 border-b border-white/5">
         <div class="container mx-auto px-6 flex justify-between items-center">
             <a href="#hero" class="flex items-center gap-2 cursor-pointer" onclick="scrollToSection('hero')">
-                <!-- アニメーション付きアイコンを使用 -->
-                <svg class="w-8 h-8 text-cyan-400" viewBox="0 0 100 100">
-                    <use href="#mission-core-icon" />
-                </svg>
+                <!-- ナビゲーションバーのアイコン -->
+                <svg class="w-8 h-8 text-cyan-400"><use href="#icon-camera" /></svg>
                 <span id="nav-brand-text" class="text-xl font-bold tracking-widest text-white">
                     DRONE<span class="font-light text-fuchsia-400">/LINK</span>
                 </span>
@@ -188,6 +189,17 @@
         </div>
     </nav>
 
+    <!-- -------------------------------------- -->
+    <!-- 固定された2Dドローンスステータス (右下) -->
+    <!-- -------------------------------------- -->
+    <div id="drone-fixed-container">
+        <!-- ドローンアイコンのみを配置 -->
+        <svg class="drone-2d-icon w-24 h-24 text-cyan-400" style="animation-duration: 4s;">
+            <use href="#icon-drone" />
+        </svg>
+    </div>
+
+
     <!-- Hero Section -->
     <header id="hero" class="relative h-screen flex items-center justify-center overflow-hidden text-white bg-cyber-grid">
         <!-- Abstract Background representing sky/tech -->
@@ -195,13 +207,6 @@
         
         <!-- HUD Overlay Effect (グリッド強調) -->
         <div class="absolute inset-0 hud-overlay z-10">
-            <!-- Corners -->
-            <div class="hud-corner top-4 left-4 border-t-2 border-l-2 rounded-tl-sm"></div>
-            <div class="hud-corner top-4 right-4 border-t-2 border-r-2 rounded-tr-sm"></div>
-            <div class="hud-corner bottom-4 left-4 border-b-2 border-l-2 rounded-bl-sm"></div>
-            <div class="hud-corner bottom-4 right-4 border-b-2 border-r-2 rounded-br-sm"></div>
-            <!-- Crosshair -->
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-fuchsia-400/30 text-8xl font-thin select-none tracking-widest">◇</div>
             <!-- Mission Status Bar -->
             <div class="absolute top-1/4 left-1/2 transform -translate-x-1/2 w-4/5 md:w-1/3 text-center text-sm text-fuchsia-400 p-2 border border-fuchsia-500/50 bg-black/50">
                 [ACCESS: GRANTED / EVENT: ACTIVE]
@@ -209,13 +214,7 @@
         </div>
 
         <div class="container mx-auto px-6 relative z-20 text-center">
-            <!-- ゲーミングドローンアイコン（大きく表示） -->
-            <div class="mb-8 mx-auto w-32 h-32 text-fuchsia-400">
-                <svg viewBox="0 0 100 100">
-                    <use href="#mission-core-icon" />
-                </svg>
-            </div>
-
+            
             <div class="inline-block px-4 py-1 mb-6 border border-fuchsia-400/50 rounded-sm bg-fuchsia-900/20 backdrop-blur-sm text-fuchsia-400 text-sm tracking-widest uppercase animate-fade-in">
                 SYSTEM BOOTUP COMPLETE
             </div>
@@ -385,10 +384,8 @@
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="mb-6 md:mb-0 scroll-animate opacity-0 translate-y-12">
                     <div class="flex items-center gap-2 mb-2">
-                        <!-- アニメーション付きアイコンを使用 -->
-                        <svg class="w-6 h-6 text-fuchsia-400" viewBox="0 0 100 100">
-                            <use href="#mission-core-icon" />
-                        </svg>
+                        <!-- ナビゲーションバーのアイコン -->
+                        <svg class="w-6 h-6 text-fuchsia-400"><use href="#icon-camera" /></svg>
                         <span class="text-lg font-bold text-white tracking-widest">DRONE/LINK</span>
                     </div>
                     <p class="text-sm text-gray-500 font-mono">[Digital Event Protocol v2.2]</p>
@@ -408,7 +405,8 @@
         const navLinks = document.querySelectorAll('.nav-link');
         const menuButton = document.getElementById('menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
-        const menuIcon = document.getElementById('icon-menu');
+
+        // --- General UI Logic ---
 
         // スクロール時のナビゲーションバーのスタイル変更
         const updateNavbarStyle = () => {
@@ -497,7 +495,9 @@
 
         // イベントリスナーの設定
         window.addEventListener('scroll', updateNavbarStyle);
-        window.addEventListener('load', updateNavbarStyle); // 初回ロード時にも適用
+        window.addEventListener('load', () => {
+            updateNavbarStyle(); // 初回ロード時にも適用
+        });
 
         // ナビゲーションリンクがクリックされたらメニューを閉じる
         document.querySelectorAll('#mobile-menu button').forEach(button => {
