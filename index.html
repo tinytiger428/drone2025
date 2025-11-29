@@ -12,31 +12,103 @@
             scroll-behavior: smooth;
         }
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', monospace; /* ゲーミング風にモノスペースを追加 */
+            /* 全体の背景を非常に暗い黒に設定 */
+            background-color: #050505;
+            color: #d1d5db; /* デフォルトの文字色を明るいグレーに */
             margin: 0;
             padding: 0;
         }
+        
+        /* -------------------------------------- */
+        /* ネオンエフェクトとアニメーション */
+        /* -------------------------------------- */
+
+        /* ネオン脈動アニメーション */
+        @keyframes neon-pulse {
+            0%, 100% { filter: drop-shadow(0 0 3px #06b6d4) drop-shadow(0 0 8px #06b6d4); opacity: 1; }
+            50% { filter: drop-shadow(0 0 5px #06b6d4) drop-shadow(0 0 12px #06b6d4); opacity: 0.95; }
+        }
+
+        /* カスタムネオングロー (シアンとマゼンタを追加) */
+        .neon-glow-cyan {
+            box-shadow: 0 0 8px #06b6d4, 0 0 16px #06b6d4;
+            animation: neon-pulse 3s ease-in-out infinite alternate;
+        }
+        .neon-glow-magenta {
+            box-shadow: 0 0 8px #ec4899, 0 0 16px #ec4899;
+        }
+        
+        /* グリッチ風テキストアニメーション */
+        @keyframes glitch {
+            0% { transform: translate(0); text-shadow: 2px 2px #ec4899, -2px -2px #06b6d4; }
+            10% { transform: translate(-2px, -2px); text-shadow: 2px 2px #ec4899, -2px -2px #06b6d4; }
+            20% { transform: translate(2px, 2px); text-shadow: -2px 2px #ec4899, 2px -2px #06b6d4; }
+            30% { transform: translate(-2px, 2px); text-shadow: 2px -2px #ec4899, -2px 2px #06b6d4; }
+            40% { transform: translate(2px, -2px); text-shadow: -2px -2px #ec4899, 2px 2px #06b6d4; }
+            50% { transform: translate(0); text-shadow: none; }
+            50.1% { transform: translate(0); text-shadow: none; } /* 一瞬静止 */
+            100% { transform: translate(0); text-shadow: none; }
+        }
+        .glitch-text {
+            animation: glitch 4s infinite alternate;
+        }
+
         /* HUD風エフェクト用のカスタムCSS */
         .hud-overlay {
-            border: 20px solid rgba(255, 255, 255, 0.05);
-            border-radius: 3rem;
+            border: 5px solid rgba(255, 255, 255, 0.05);
+            border-radius: 0.25rem;
             pointer-events: none;
+            /* グリッドパターンを強化 */
+            background: 
+                linear-gradient(to right, #111 1px, transparent 1px) 0 0,
+                linear-gradient(to bottom, #111 1px, transparent 1px) 0 0;
+            background-size: 50px 50px;
+            opacity: 0.5;
         }
         .hud-corner {
             position: absolute;
-            width: 96px; /* w-24 */
-            height: 96px; /* h-24 */
-            border-color: rgba(96, 165, 250, 0.5); /* border-blue-400/50 */
+            width: 32px;
+            height: 32px;
+            border-color: #ec4899; /* マゼンタ */
+            filter: drop-shadow(0 0 3px #ec4899);
         }
-        .bg-drone-hero {
-            background-image: url('https://images.unsplash.com/photo-1473968512647-3e447244af8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
-            background-size: cover;
-            background-position: center;
+        .bg-cyber-grid {
+            /* ヒーロー背景を抽象的なグラデーションとグリッドに */
+            background-color: #050505;
+            background-image: linear-gradient(rgba(6, 182, 212, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(6, 182, 212, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
         }
+
+        /* -------------------------------------- */
+        /* ドローンアニメーション専用CSS */
+        /* -------------------------------------- */
+
+        /* 1. ホバリングアニメーション（機体全体） */
+        @keyframes hover {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); } /* 上にホバリング */
+            100% { transform: translateY(0); }
+        }
+        .drone-hover {
+            animation: hover 3s ease-in-out infinite alternate; /* 往復アニメーション */
+        }
+
+        /* 2. プロペラ回転アニメーション */
+        @keyframes spin-fast {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .propeller-spin {
+            transform-box: fill-box;
+            transform-origin: 50px 50px; /* SVGの中心 */
+            animation: spin-fast 0.8s linear infinite; /* 非常に速い回転 */
+        }
+        
     </style>
     <!-- Lucide Icon用のSVG定義 (一部) -->
     <svg style="display: none;">
-        <symbol id="icon-wind" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.76 7.39a2 2 0 0 0 0 2.82l.47.47a2 2 0 0 1 0 2.82l-.47.47a2 2 0 0 0 0 2.82l.47.47a2 2 0 0 1 0 2.82l-4.24-4.24m-3.8-3.8a2 2 0 0 0 0 2.82l.47.47a2 2 0 0 1 0 2.82l-.47.47a2 2 0 0 0 0 2.82l.47.47a2 2 0 0 1 0 2.82"/><path d="M12.5 12.5a2.12 2.12 0 1 0-3 3 2.12 2.12 0 0 0 3-3Z"/></symbol>
         <symbol id="icon-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
         <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></symbol>
         <symbol id="icon-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
@@ -46,25 +118,60 @@
         <symbol id="icon-alert-triangle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.87 18a2 2 0 0 0 1.71 3h16.84a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></symbol>
         <symbol id="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></symbol>
         <symbol id="icon-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M15 9V7M9 7v2M15 17v-2M9 17v-2M12 12h.01"/><path d="M12 19V5"/></symbol>
+        <symbol id="icon-monitor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="6" x2="18" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></symbol>
+        <symbol id="icon-radio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.9 19.5a1.45 1.45 0 0 0 2.22 0"/><path d="M2.21 16.4a5.45 5.45 0 0 1 8.58 0"/><path d="M0.5 13.5a9.45 9.45 0 0 1 12.08 0"/><circle cx="7" cy="7" r="2"/></symbol>
     </svg>
+    
+    <!-- 抽象的なドローンSVG定義 (アニメーション用) -->
+    <symbol id="mission-core-icon" viewBox="0 0 100 100">
+        <!-- 1. 機体全体のホバリングアニメーションを適用するグループ -->
+        <g class="drone-hover">
+            
+            <!-- 2. プロペラ回転アニメーションを適用するグループ -->
+            <g class="propeller-spin">
+                <!-- 4つの円弧 (プロペラの動き) - シアンネオンでより明るく -->
+                <path d="M 50 10 A 40 40 0 0 1 90 50 L 85 50 A 35 35 0 0 0 50 15 Z" fill="#06B6D4" opacity="0.35" filter="drop-shadow(0 0 2px #06B6D4)" transform="rotate(0, 50, 50)"/>
+                <path d="M 50 10 A 40 40 0 0 1 90 50 L 85 50 A 35 35 0 0 0 50 15 Z" fill="#06B6D4" opacity="0.35" filter="drop-shadow(0 0 2px #06B6D4)" transform="rotate(90, 50, 50)"/>
+                <path d="M 50 10 A 40 40 0 0 1 90 50 L 85 50 A 35 35 0 0 0 50 15 Z" fill="#06B6D4" opacity="0.35" filter="drop-shadow(0 0 2px #06B6D4)" transform="rotate(180, 50, 50)"/>
+                <path d="M 50 10 A 40 40 0 0 1 90 50 L 85 50 A 35 35 0 0 0 50 15 Z" fill="#06B6D4" opacity="0.35" filter="drop-shadow(0 0 2px #06B6D4)" transform="rotate(270, 50, 50)"/>
+            </g>
+            
+            <!-- 3. 機体本体（六角形 - マゼンタネオン） - 影を追加して立体感を出す -->
+            <g transform="translate(50, 50)">
+                <!-- 濃い影（立体感） -->
+                <polygon points="0,-25 21.65,-12.5 21.65,12.5 0,25 -21.65,12.5 -21.65,-12.5" 
+                         fill="#222" opacity="0.7" transform="translate(0, 5) rotate(30)"/>
+                <!-- 本体 -->
+                <polygon points="0,-25 21.65,-12.5 21.65,12.5 0,25 -21.65,12.5 -21.65,-12.5" 
+                         fill="#0E1724" stroke="#EC4899" stroke-width="2" class="neon-glow-magenta" transform="rotate(30)"/>
+            </g>
+            
+            <!-- センタースクリーン/カメラ（中心） -->
+            <rect x="42" y="42" width="16" height="16" rx="2" fill="#050505" opacity="0.9" stroke="#06B6D4" stroke-width="1" filter="drop-shadow(0 0 1px #06B6D4)"/>
+            <circle cx="50" cy="50" r="4" fill="#EC4899" />
+        </g>
+    </symbol>
 </head>
-<body class="font-sans text-gray-800 bg-slate-50 min-h-screen">
+<body class="font-sans text-gray-200 min-h-screen">
 
     <!-- Navigation -->
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-transparent py-5">
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-transparent py-5 border-b border-white/5">
         <div class="container mx-auto px-6 flex justify-between items-center">
             <a href="#hero" class="flex items-center gap-2 cursor-pointer" onclick="scrollToSection('hero')">
-                <svg class="w-8 h-8 text-white"><use href="#icon-wind"/></svg>
-                <span id="nav-brand-text" class="text-xl font-bold tracking-wider text-white">
-                    Drone<span class="font-light">Journalism</span>
+                <!-- アニメーション付きアイコンを使用 -->
+                <svg class="w-8 h-8 text-cyan-400" viewBox="0 0 100 100">
+                    <use href="#mission-core-icon" />
+                </svg>
+                <span id="nav-brand-text" class="text-xl font-bold tracking-widest text-white">
+                    DRONE<span class="font-light text-fuchsia-400">/LINK</span>
                 </span>
             </a>
 
             <!-- Desktop Menu -->
             <div class="hidden md:flex gap-8">
-                <button onclick="scrollToSection('merits')" class="nav-link text-sm font-medium hover:text-blue-400 transition-colors text-white/90">メリット</button>
-                <button onclick="scrollToSection('challenges')" class="nav-link text-sm font-medium hover:text-blue-400 transition-colors text-white/90">課題とリスク</button>
-                <button onclick="scrollToSection('future')" class="nav-link text-sm font-medium hover:text-blue-400 transition-colors text-white/90">未来の展望</button>
+                <button onclick="scrollToSection('merits')" class="nav-link text-sm font-medium hover:text-cyan-400 transition-colors text-gray-300">>> CORE: FEATURES</button>
+                <button onclick="scrollToSection('challenges')" class="nav-link text-sm font-medium hover:text-fuchsia-400 transition-colors text-gray-300">>> CRITICAL: ACCESS</button>
+                <button onclick="scrollToSection('future')" class="nav-link text-sm font-medium hover:text-indigo-400 transition-colors text-gray-300">>> DATA: MAP</button>
             </div>
 
             <!-- Mobile Menu Button -->
@@ -74,156 +181,166 @@
         </div>
 
         <!-- Mobile Menu Dropdown -->
-        <div id="mobile-menu" class="absolute top-full left-0 w-full bg-white shadow-lg md:hidden flex flex-col p-4 hidden">
-            <button onclick="scrollToSection('merits'); document.getElementById('mobile-menu').classList.add('hidden');" class="py-3 text-left text-slate-600 border-b border-gray-100 font-medium">メリット</button>
-            <button onclick="scrollToSection('challenges'); document.getElementById('mobile-menu').classList.add('hidden');" class="py-3 text-left text-slate-600 border-b border-gray-100 font-medium">課題とリスク</button>
-            <button onclick="scrollToSection('future'); document.getElementById('mobile-menu').classList.add('hidden');" class="py-3 text-left text-slate-600 font-medium">未来の展望</button>
+        <div id="mobile-menu" class="absolute top-full left-0 w-full bg-[#111] shadow-lg md:hidden flex flex-col p-4 hidden border-t border-fuchsia-500/30">
+            <button onclick="scrollToSection('merits'); document.getElementById('mobile-menu').classList.add('hidden');" class="py-3 text-left text-cyan-400 border-b border-gray-800 font-medium">> CORE: FEATURES</button>
+            <button onclick="scrollToSection('challenges'); document.getElementById('mobile-menu').classList.add('hidden');" class="py-3 text-left text-fuchsia-400 border-b border-gray-800 font-medium">> CRITICAL: ACCESS</button>
+            <button onclick="scrollToSection('future'); document.getElementById('mobile-menu').classList.add('hidden');" class="py-3 text-left text-indigo-400 font-medium">> DATA: MAP</button>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <header id="hero" class="relative h-screen flex items-center justify-center overflow-hidden bg-slate-900 text-white">
+    <header id="hero" class="relative h-screen flex items-center justify-center overflow-hidden text-white bg-cyber-grid">
         <!-- Abstract Background representing sky/tech -->
-        <div class="absolute inset-0 bg-gradient-to-b from-blue-900 via-slate-800 to-slate-900 opacity-90 z-0"></div>
-        <div class="absolute inset-0 bg-drone-hero mix-blend-overlay opacity-40 z-0"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-slate-900 via-gray-900 to-black opacity-90 z-0"></div>
         
-        <!-- HUD Overlay Effect -->
+        <!-- HUD Overlay Effect (グリッド強調) -->
         <div class="absolute inset-0 hud-overlay z-10">
-            <div class="hud-corner top-10 left-10 border-t-2 border-l-2 rounded-tl-lg"></div>
-            <div class="hud-corner top-10 right-10 border-t-2 border-r-2 rounded-tr-lg"></div>
-            <div class="hud-corner bottom-10 left-10 border-b-2 border-l-2 rounded-bl-lg"></div>
-            <div class="hud-corner bottom-10 right-10 border-b-2 border-r-2 rounded-br-lg"></div>
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-blue-400/20 text-9xl font-thin select-none">+</div>
+            <!-- Corners -->
+            <div class="hud-corner top-4 left-4 border-t-2 border-l-2 rounded-tl-sm"></div>
+            <div class="hud-corner top-4 right-4 border-t-2 border-r-2 rounded-tr-sm"></div>
+            <div class="hud-corner bottom-4 left-4 border-b-2 border-l-2 rounded-bl-sm"></div>
+            <div class="hud-corner bottom-4 right-4 border-b-2 border-r-2 rounded-br-sm"></div>
+            <!-- Crosshair -->
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-fuchsia-400/30 text-8xl font-thin select-none tracking-widest">◇</div>
+            <!-- Mission Status Bar -->
+            <div class="absolute top-1/4 left-1/2 transform -translate-x-1/2 w-4/5 md:w-1/3 text-center text-sm text-fuchsia-400 p-2 border border-fuchsia-500/50 bg-black/50">
+                [ACCESS: GRANTED / EVENT: ACTIVE]
+            </div>
         </div>
 
         <div class="container mx-auto px-6 relative z-20 text-center">
-            <div class="inline-block px-4 py-1 mb-6 border border-blue-400/30 rounded-full bg-blue-500/10 backdrop-blur-sm text-blue-300 text-sm tracking-widest uppercase animate-fade-in">
-                Next Generation Reporting
+            <!-- ゲーミングドローンアイコン（大きく表示） -->
+            <div class="mb-8 mx-auto w-32 h-32 text-fuchsia-400">
+                <svg viewBox="0 0 100 100">
+                    <use href="#mission-core-icon" />
+                </svg>
+            </div>
+
+            <div class="inline-block px-4 py-1 mb-6 border border-fuchsia-400/50 rounded-sm bg-fuchsia-900/20 backdrop-blur-sm text-fuchsia-400 text-sm tracking-widest uppercase animate-fade-in">
+                SYSTEM BOOTUP COMPLETE
             </div>
             <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight tracking-tight">
-                報道は、<br class="md:hidden" /><span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">空からの視点</span>へ。
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-pink-300">HYPER</span>な<span class="glitch-text text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-300">偵察データ</span>を<br class="md:hidden" /><span class="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-pink-300">即時リンク</span>せよ。
             </h1>
-            <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed">
-                ドローンジャーナリズムが切り拓く、新しいニュースの形。<br />
-                鳥の目線で捉える「真実」と、私たちが直面する「課題」について。
+            <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed font-mono">
+                [DRONE/OBSERVATION/DATA] 3つの領域が交差する、未踏のデジタル世界へようこそ。
             </p>
             <button 
                 onclick="scrollToSection('intro')"
-                class="group bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-full font-bold transition-all transform hover:scale-105 shadow-lg shadow-blue-900/50 flex items-center gap-2 mx-auto"
+                class="group bg-fuchsia-600 hover:bg-fuchsia-500 text-slate-900 px-8 py-4 rounded-sm font-extrabold transition-all transform hover:scale-105 shadow-lg neon-glow-magenta flex items-center gap-2 mx-auto uppercase tracking-widest"
             >
-                レポートを読む
+                >> ACCESS GRANTED
                 <svg class="w-5 h-5 group-hover:translate-y-1 transition-transform"><use href="#icon-chevron-down"/></svg>
             </button>
         </div>
     </header>
 
     <!-- Intro Section -->
-    <section id="intro" class="py-20 bg-white">
+    <section id="intro" class="py-20 bg-[#111] border-t border-b border-fuchsia-500/20">
         <div class="container mx-auto px-6">
+            <!-- タイトルとテキストにアニメーションを適用 -->
             <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-3xl font-bold text-slate-800 mb-8 relative inline-block">
-                    ドローンジャーナリズムとは？
-                    <div class="absolute -bottom-2 left-0 w-full h-1 bg-blue-500 rounded-full"></div>
+                <h2 class="text-3xl font-bold text-fuchsia-400 mb-8 relative inline-block tracking-wider uppercase scroll-animate opacity-0 translate-y-12">
+                    EVENT: CORE PROTOCOL
+                    <div class="absolute -bottom-2 left-0 w-full h-1 bg-fuchsia-600/50 rounded-full"></div>
                 </h2>
-                <p class="text-lg text-slate-600 leading-8 text-left md:text-center">
-                    無人航空機（ドローン）を使用して、ニュース報道のための写真や映像を撮影、またはデータを収集する手法のことです。
-                    従来の取材方法では不可能だった「低空からの俯瞰」や「危険地帯への接近」を可能にし、
-                    私たちがニュースを見る目を劇的に変えつつあります。
+                <p class="text-lg text-gray-300 leading-8 text-left md:text-center p-6 border border-gray-700 bg-gray-900/50 rounded-sm shadow-inner shadow-black/50 scroll-animate opacity-0 translate-y-12">
+                    DRONE LINKプロトコルは、従来のイベントの枠を超え、ドローン技術、観測データ、デジタルアートの3要素を融合させた体験を提供します。
+                    全ての参加者がドローン視点のオーディエンス、あるいはデータを解析するオペレーターとしてこの空間を構成します。
+                    これは単なるイベントではなく、次世代の「情報共有（Data-Sharing）」のプラットフォームです。
                 </p>
             </div>
         </div>
     </section>
 
-    <!-- Merits Section -->
-    <section id="merits" class="py-20 bg-slate-50">
+    <!-- Merits Section (Features) -->
+    <section id="merits" class="py-20 bg-black">
         <div class="container mx-auto px-6">
-            <div class="text-center mb-16">
-                <span class="text-blue-600 font-bold tracking-wider uppercase text-sm">Advantages</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mt-2">導入のメリット</h2>
+            <div class="text-center mb-16 scroll-animate opacity-0 translate-y-12">
+                <span class="text-cyan-400 font-bold tracking-widest uppercase text-sm">CORE FEATURES</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mt-2 tracking-wider">構成要素（システム・フィーチャー）</h2>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                <!-- Card 1 -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-slate-100">
-                    <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-6 text-blue-600">
-                        <svg class="w-8 h-8"><use href="#icon-camera"/></svg>
+                <!-- Card 1 (ドローンをテーマに修正) -->
+                <div class="p-6 rounded-sm border border-cyan-600/50 bg-gray-900/50 shadow-lg hover:shadow-cyan-900/70 hover:border-cyan-400 transition-all duration-300 scroll-animate opacity-0 translate-y-12">
+                    <div class="w-12 h-12 bg-cyan-900 rounded-sm flex items-center justify-center mb-4 text-cyan-400 border border-cyan-600">
+                        <svg class="w-7 h-7"><use href="#icon-camera"/></svg>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-4">圧倒的な視覚体験</h3>
-                    <p class="text-slate-600 leading-relaxed">
-                        災害現場や大規模イベントの全体像を俯瞰的かつ立体的に把握。言葉だけでは伝わらない規模感を一瞬で伝えます。
+                    <h3 class="text-xl font-bold text-white mb-3 tracking-wide">01: DRONE BATTLE ARENA</h3>
+                    <p class="text-gray-400 leading-relaxed text-sm">
+                        ドローンを介したトッププレイヤーの視点をリアルタイムで配信。広範囲の戦場を俯瞰し、戦略的な観戦体験を提供します。
                     </p>
                 </div>
 
                 <!-- Card 2 -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-slate-100">
-                    <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-6 text-green-600">
-                        <svg class="w-8 h-8"><use href="#icon-shield"/></svg>
+                <div class="p-6 rounded-sm border border-fuchsia-600/50 bg-gray-900/50 shadow-lg hover:shadow-fuchsia-900/70 hover:border-fuchsia-400 transition-all duration-300 scroll-animate opacity-0 translate-y-12" style="transition-delay: 150ms;">
+                    <div class="w-12 h-12 bg-fuchsia-900 rounded-sm flex items-center justify-center mb-4 text-fuchsia-400 border border-fuchsia-600">
+                        <svg class="w-7 h-7"><use href="#icon-cpu"/></svg>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-4">取材の安全性確保</h3>
-                    <p class="text-slate-600 leading-relaxed">
-                        紛争地帯や災害現場など、人間が立ち入るには危険な場所でも、ジャーナリストの命を危険に晒すことなく安全に情報収集が可能です。
+                    <h3 class="text-xl font-bold text-white mb-3 tracking-wide">02: DATA PROCESS LAB</h3>
+                    <p class="text-gray-400 leading-relaxed text-sm">
+                        収集された膨大な観測データを解析。クリエイターやアナリストによる限定コンテンツをライブ配信し、データの裏側を公開します。
                     </p>
                 </div>
 
-                <!-- Card 3 -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-slate-100">
-                    <div class="w-14 h-14 bg-yellow-100 rounded-xl flex items-center justify-center mb-6 text-yellow-600">
-                        <svg class="w-8 h-8"><use href="#icon-zap"/></svg>
+                <!-- Card 3 (通信をテーマに修正) -->
+                <div class="p-6 rounded-sm border border-cyan-600/50 bg-gray-900/50 shadow-lg hover:shadow-cyan-900/70 hover:border-cyan-400 transition-all duration-300 scroll-animate opacity-0 translate-y-12" style="transition-delay: 300ms;">
+                    <div class="w-12 h-12 bg-cyan-900 rounded-sm flex items-center justify-center mb-4 text-cyan-400 border border-cyan-600">
+                        <svg class="w-7 h-7"><use href="#icon-radio"/></svg>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-4">機動性と低コスト</h3>
-                    <p class="text-slate-600 leading-relaxed">
-                        ヘリコプターに比べて圧倒的に安価で、準備時間も短縮。狭い場所からでも離着陸できるため、速報性にも優れています。
+                    <h3 class="text-xl font-bold text-white mb-3 tracking-wide">03: HIGH-SPEED DATA LINK</h3>
+                    <p class="text-gray-400 leading-relaxed text-sm">
+                        イベントを彩るサウンドエフェクトは、全てデータリンクのシグナル音。超低遅延でのライブ配信とデータ転送を実現します。
                     </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Challenges Section -->
-    <section id="challenges" class="py-20 bg-slate-900 text-white relative overflow-hidden">
-        <!-- Decorative elements -->
-        <div class="absolute top-0 right-0 w-1/2 h-full bg-blue-900/10 skew-x-12 transform translate-x-20"></div>
+    <!-- Challenges Section (Access/Rules) -->
+    <section id="challenges" class="py-20 bg-[#111] border-t border-b border-fuchsia-500/20 relative overflow-hidden">
         
         <div class="container mx-auto px-6 relative z-10">
             <div class="flex flex-col md:flex-row items-start justify-between gap-12 max-w-6xl mx-auto">
                 
-                <div class="md:w-1/3">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-red-500/20 text-red-300 rounded-full text-sm font-bold mb-4">
+                <div class="md:w-1/3 scroll-animate opacity-0 translate-y-12">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-fuchsia-900/50 text-fuchsia-400 rounded-sm text-sm font-bold mb-4 border border-fuchsia-600/50">
                         <svg class="w-4 h-4"><use href="#icon-alert-triangle"/></svg>
-                        Challenges
+                        CRITICAL ACCESS
                     </div>
-                    <h2 class="text-3xl md:text-4xl font-bold mb-6 leading-tight">
-                        進化の裏にある、<br/><span class="text-red-400">解決すべき課題</span>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6 leading-tight text-white tracking-wider">
+                        イベント参加<br/><span class="text-fuchsia-400 neon-glow-magenta">認証条件</span>をクリアせよ。
                     </h2>
-                    <p class="text-slate-400 leading-relaxed">
-                        技術の進歩は素晴らしい恩恵をもたらしますが、同時に新たな倫理的・法的ジレンマも生み出しています。私たちはどう向き合うべきでしょうか。
+                    <p class="text-gray-400 leading-relaxed">
+                        ミッションに参加するためには、以下のアクセス条件を満たす必要があります。不正アクセスは即座にプロトコル違反として処理されます。
                     </p>
                 </div>
 
                 <div class="md:w-2/3 grid gap-6">
-                    <div class="bg-slate-800/50 p-6 rounded-xl border border-slate-700 hover:border-red-400/50 transition-colors">
+                    <div class="bg-gray-900 p-6 rounded-sm border border-fuchsia-600/50 shadow-xl shadow-fuchsia-900/30 hover:border-fuchsia-400 transition-colors scroll-animate opacity-0 translate-y-12" style="transition-delay: 100ms;">
                         <div class="flex items-start gap-4">
-                            <div class="p-3 bg-red-500/10 rounded-lg text-red-400 shrink-0">
-                                <svg class="w-6 h-6"><use href="#icon-eye"/></svg>
+                            <div class="p-3 bg-fuchsia-900/50 rounded-sm text-fuchsia-400 shrink-0 border border-fuchsia-500">
+                                <svg class="w-6 h-6"><use href="#icon-shield"/></svg>
                             </div>
                             <div>
-                                <h3 class="text-xl font-bold mb-2">プライバシーの侵害</h3>
-                                <p class="text-slate-300 text-sm leading-relaxed">
-                                    高解像度カメラとズームレンズにより、意図せず個人の生活空間を映し出してしまうリスクがあります。「知る権利」と「プライバシー」の境界線が問われています。
+                                <h3 class="text-xl font-bold mb-2 text-white tracking-wide">条件 01: オペレーター・ライセンス認証</h3>
+                                <p class="text-gray-400 text-sm leading-relaxed">
+                                    一部の限定コンテンツには、高度なオペレーターライセンス（プレミアムアカウント）の認証が必要です。未認証の場合、視聴できるデータ量に制限が発生します。
                                 </p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-slate-800/50 p-6 rounded-xl border border-slate-700 hover:border-red-400/50 transition-colors">
+                    <div class="bg-gray-900 p-6 rounded-sm border border-fuchsia-600/50 shadow-xl shadow-fuchsia-900/30 hover:border-fuchsia-400 transition-colors scroll-animate opacity-0 translate-y-12" style="transition-delay: 250ms;">
                         <div class="flex items-start gap-4">
-                            <div class="p-3 bg-orange-500/10 rounded-lg text-orange-400 shrink-0">
-                                <svg class="w-6 h-6"><use href="#icon-alert-triangle"/></svg>
+                            <div class="p-3 bg-fuchsia-900/50 rounded-sm text-cyan-400 shrink-0 border border-fuchsia-500">
+                                <svg class="w-6 h-6"><use href="#icon-eye"/></svg>
                             </div>
                             <div>
-                                <h3 class="text-xl font-bold mb-2">法規制と安全管理</h3>
-                                <p class="text-slate-300 text-sm leading-relaxed">
-                                    航空法による飛行禁止区域やルールの厳格化が進んでいます。報道の自由と安全規制のバランス、そして墜落事故のリスク管理が課題です。
+                                <h3 class="text-xl font-bold mb-2 text-white tracking-wide">条件 02: 広域データリンク帯域幅要件</h3>
+                                <p class="text-gray-400 text-sm leading-relaxed">
+                                    高解像度（4K）のドローンライブストリームを安定して視聴するには、推奨ネットワーク速度を満たしている必要があります。推奨環境をご確認ください。
                                 </p>
                             </div>
                         </div>
@@ -233,25 +350,28 @@
         </div>
     </section>
 
-    <!-- Future Section -->
-    <section id="future" class="py-24 bg-gradient-to-br from-blue-50 to-indigo-50">
+    <!-- Future Section (Timeline/Map) -->
+    <section id="future" class="py-24 bg-black border-t border-cyan-500/20">
         <div class="container mx-auto px-6 text-center">
             <div class="max-w-4xl mx-auto">
-                <svg class="w-16 h-16 text-indigo-600 mx-auto mb-6"><use href="#icon-cpu"/></svg>
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-8">これからの展望</h2>
+                <!-- アイコンをモニターに変更 -->
+                <svg class="w-16 h-16 text-cyan-400 mx-auto mb-6 neon-glow-cyan scroll-animate opacity-0 translate-y-12">
+                    <use href="#icon-monitor"/>
+                </svg>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-8 tracking-wider scroll-animate opacity-0 translate-y-12">ミッション・タイムライン</h2>
                 
                 <div class="grid md:grid-cols-2 gap-8 text-left mt-12">
-                    <div class="bg-white p-8 rounded-3xl shadow-lg border-b-4 border-indigo-500">
-                        <h3 class="text-xl font-bold text-indigo-900 mb-4">AI × 自動化</h3>
-                        <p class="text-slate-600">
-                            AIによる自動追尾や障害物回避技術が向上し、より安全で高度な撮影が可能に。操縦者の負担が減り、取材そのものに集中できる環境が整いつつあります。
+                    <div class="p-8 rounded-sm bg-gray-900/50 border border-cyan-600/50 shadow-lg shadow-cyan-900/50 hover:border-cyan-400 transition-all scroll-animate opacity-0 translate-y-12" style="transition-delay: 100ms;">
+                        <h3 class="text-xl font-bold text-cyan-400 mb-4 tracking-wide">01: CORE EVENT [13:00 - 18:00 JST]</h3>
+                        <p class="text-gray-400 text-sm">
+                            メインステージでの **ドローン**eSports 決勝戦と、特別ゲストによるオープニングアクト。リアルタイム投票で勝敗を予想せよ。
                         </p>
                     </div>
                     
-                    <div class="bg-white p-8 rounded-3xl shadow-lg border-b-4 border-purple-500">
-                        <h3 class="text-xl font-bold text-indigo-900 mb-4">データジャーナリズムへの進化</h3>
-                        <p class="text-slate-600">
-                            単なる「映像」だけでなく、サーモグラフィやLiDARによる3Dマッピングなど、科学的データを収集・分析するツールとしての活用が期待されています。
+                    <div class="p-8 rounded-sm bg-gray-900/50 border border-fuchsia-600/50 shadow-lg shadow-fuchsia-900/50 hover:border-fuchsia-400 transition-all scroll-animate opacity-0 translate-y-12" style="transition-delay: 250ms;">
+                        <h3 class="text-xl font-bold text-fuchsia-400 mb-4 tracking-wide">02: NIGHT SESSION [19:00 - 24:00 JST]</h3>
+                        <p class="text-gray-400 text-sm">
+                            データ処理ラボからの独占配信と、人気DJによるクローズニング・ライブ。デジタルアートと**観測データ**の融合を見届けよ。
                         </p>
                     </div>
                 </div>
@@ -260,19 +380,22 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+    <footer class="bg-black text-slate-400 py-12 border-t border-fuchsia-500/30">
         <div class="container mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-6 md:mb-0">
+                <div class="mb-6 md:mb-0 scroll-animate opacity-0 translate-y-12">
                     <div class="flex items-center gap-2 mb-2">
-                        <svg class="w-6 h-6 text-blue-500"><use href="#icon-wind"/></svg>
-                        <span class="text-lg font-bold text-white">DroneJournalism</span>
+                        <!-- アニメーション付きアイコンを使用 -->
+                        <svg class="w-6 h-6 text-fuchsia-400" viewBox="0 0 100 100">
+                            <use href="#mission-core-icon" />
+                        </svg>
+                        <span class="text-lg font-bold text-white tracking-widest">DRONE/LINK</span>
                     </div>
-                    <p class="text-sm">空の産業革命がもたらす、新しい報道のカタチ。</p>
+                    <p class="text-sm text-gray-500 font-mono">[Digital Event Protocol v2.2]</p>
                 </div>
-                <div class="text-sm text-center md:text-right">
-                    <p>&copy; 2024 Drone Journalism Report.</p>
-                    <p class="mt-2 text-xs text-slate-600">※本サイトは生成AIによって作成されたデモサイトです。</p>
+                <div class="text-sm text-center md:text-right scroll-animate opacity-0 translate-y-12" style="transition-delay: 150ms;">
+                    <p>&copy; 2024 Command Protocol. All Rights Reserved.</p>
+                    <p class="mt-2 text-xs text-gray-700 font-mono">STATUS: SYNCHRONIZED</p>
                 </div>
             </div>
         </div>
@@ -285,7 +408,7 @@
         const navLinks = document.querySelectorAll('.nav-link');
         const menuButton = document.getElementById('menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
-        const menuIcon = document.getElementById('menu-icon');
+        const menuIcon = document.getElementById('icon-menu');
 
         // スクロール時のナビゲーションバーのスタイル変更
         const updateNavbarStyle = () => {
@@ -293,21 +416,26 @@
             
             // Navbar Background/Padding
             if (isScrolled) {
-                navbar.className = 'fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md shadow-md py-3';
+                // スクロール後は少し背景を濃くし、ネオンボーダーを追加
+                navbar.className = 'fixed w-full z-50 transition-all duration-300 bg-[#151515] backdrop-blur-md shadow-lg py-3 border-b border-fuchsia-500/50';
             } else {
-                navbar.className = 'fixed w-full z-50 transition-all duration-300 bg-transparent py-5';
+                // スクロール前はほぼ透明に
+                navbar.className = 'fixed w-full z-50 transition-all duration-300 bg-transparent py-5 border-b border-white/5';
             }
 
-            // Text/Icon Colors
-            const colorClass = isScrolled ? 'text-slate-800' : 'text-white';
-            const linkColorClass = isScrolled ? 'text-slate-600' : 'text-white/90';
-            
-            navBrandText.classList.remove('text-slate-800', 'text-white');
-            navBrandText.classList.add(colorClass);
+            // Text/Icon Colors and Class management
+            navBrandText.classList.remove('text-cyan-400', 'text-white', 'text-fuchsia-400');
+            navBrandText.classList.add(isScrolled ? 'text-fuchsia-400' : 'text-white');
 
-            menuIcon.classList.remove('text-slate-800', 'text-white');
-            menuIcon.classList.add(colorClass);
+            // menuIconの親要素のSVGタグに直接クラスを適用する必要がある
+            const menuSvg = menuButton.querySelector('svg');
+            if (menuSvg) {
+                menuSvg.classList.remove('text-cyan-400', 'text-white', 'text-fuchsia-400');
+                menuSvg.classList.add(isScrolled ? 'text-fuchsia-400' : 'text-white');
+            }
             
+            // ナビゲーションリンクの色はスクロール後も維持
+            const linkColorClass = 'text-gray-300';
             navLinks.forEach(link => {
                 link.classList.remove('text-slate-600', 'text-white/90');
                 link.classList.add(linkColorClass);
@@ -325,19 +453,47 @@
         // モバイルメニューのトグル
         menuButton.addEventListener('click', () => {
             const isHidden = mobileMenu.classList.contains('hidden');
+            const menuSvg = menuButton.querySelector('svg');
+
             if (isHidden) {
                 mobileMenu.classList.remove('hidden');
-                menuIcon.innerHTML = '<use href="#icon-x"/>'; // Xアイコンに変更
+                menuSvg.querySelector('use').setAttribute('href', '#icon-x'); // Xアイコンに変更
+                menuSvg.classList.remove('text-white');
+                menuSvg.classList.add('text-fuchsia-400'); // モバイルメニューが開いたときはネオンカラー
             } else {
                 mobileMenu.classList.add('hidden');
-                menuIcon.innerHTML = '<use href="#icon-menu"/>'; // メニューアイコンに戻す
+                menuSvg.querySelector('use').setAttribute('href', '#icon-menu'); // メニューアイコンに戻す
+                updateNavbarStyle(); // スタイルをスクロール位置に合わせて更新
             }
-            
-            // Xアイコンの色はnavBarの状態に合わせる
-            const colorClass = window.scrollY > 50 ? 'text-slate-800' : 'text-white';
-            menuIcon.classList.remove('text-slate-800', 'text-white');
-            menuIcon.classList.add(colorClass);
         });
+
+        // Intersection Observerによるスクロールアニメーションの実装
+        const observerOptions = {
+            root: null, // ビューポートをルートとする
+            rootMargin: '0px',
+            threshold: 0.1 // 要素の10%が見えたら発火
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // 要素がビューポートに入った
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-12');
+                    
+                    // アニメーションが完了したら監視を停止してパフォーマンスを向上
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // 監視対象の要素
+        document.querySelectorAll('.scroll-animate').forEach(element => {
+            // スムーズな遷移のためのTailwindクラスを追加
+            element.classList.add('transition-all', 'duration-700', 'ease-out');
+            observer.observe(element);
+        });
+
 
         // イベントリスナーの設定
         window.addEventListener('scroll', updateNavbarStyle);
@@ -347,7 +503,8 @@
         document.querySelectorAll('#mobile-menu button').forEach(button => {
             button.addEventListener('click', () => {
                 mobileMenu.classList.add('hidden');
-                menuIcon.innerHTML = '<use href="#icon-menu"/>';
+                const menuSvg = menuButton.querySelector('svg');
+                menuSvg.querySelector('use').setAttribute('href', '#icon-menu');
                 updateNavbarStyle(); // スタイルをリフレッシュ
             });
         });
